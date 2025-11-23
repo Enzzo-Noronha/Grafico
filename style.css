@@ -1,69 +1,166 @@
-body{
-    margin: 0px;
-    padding: 0px;
-    box-sizing: border-box;
-    font-family: "Roboto Mono", monospace;
-    font-optical-sizing: auto;
-    font-weight: 600;
-    font-style: normal;
+/* Variáveis de Cores (Opcional, mas útil para manutenção) */
+:root {
+    --cor-principal: #007bff; /* Azul vibrante para destaque */
+    --cor-secundaria: #343a40; /* Cinza escuro para texto */
+    --fundo-pagina: #f4f7fa; /* Cinza claro para o fundo */
+    --fundo-card: #ffffff; /* Branco para os containers de gráfico */
+    --sombra-card: 0 4px 12px rgba(0, 0, 0, 0.1); /* Sombra suave */
 }
 
-header{
+/* 1. Reset e Configuração Básica */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Roboto Mono', monospace; /* Mantém a fonte original, mas com fallback */
+    background-color: var(--fundo-pagina);
+    color: var(--cor-secundaria);
+    line-height: 1.6;
+    padding-top: 80px; /* Espaço para o header fixo */
+}
+
+/* 2. Header e Navegação */
+header {
+    background-color: var(--fundo-card);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    padding: 15px 40px;
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
-    gap: 100px;
-    background-color: rgb(7, 213, 240);
-    color: white;
+    position: fixed; /* Fixa o header no topo */
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 100;
 }
-a{
+
+#nome_relatorio {
+    font-size: 1.6rem;
+    color: var(--cor-principal);
+    font-weight: 700;
+}
+
+/* Estilo para os links do menu */
+header a {
     text-decoration: none;
-    color: rgb(0, 0, 0);
-    font-size: 20px;
-    padding: 10px;
-    transition: 0.3s;
-}
-a:hover{
-    background-color: rgb(6, 184, 207);
-    color: black;
+    color: var(--cor-secundaria);
+    padding: 8px 15px;
+    margin-left: 10px;
     border-radius: 4px;
+    transition: background-color 0.3s, color 0.3s;
+    font-weight: 500;
+}
+
+header a:hover {
+    background-color: #e9ecef;
+    color: var(--cor-principal);
+}
+
+/* Classe de ativo (assumindo que o seu JS irá adicionar esta classe) */
+header a.active {
+    background-color: var(--cor-principal);
+    color: var(--fundo-card);
+}
+
+/* 3. Estilo das Seções de Gráfico (Cards) */
+
+/* O 'br' do seu HTML é resolvido com o padding-top do body, mas aqui garantimos o espaçamento */
+body > br {
+    display: none; /* Remove o <br> do layout */
+}
+
+section {
+    max-width: 1200px;
+    margin: 30px auto;
+    padding: 30px;
+    background-color: var(--fundo-card);
+    border-radius: 8px;
+    box-shadow: var(--sombra-card); /* Efeito de card */
+    display: flex; /* Flexbox para layout interno */
+    flex-direction: row;
+    gap: 30px;
+    align-items: flex-start;
+}
+
+/* Ajusta o tamanho e o container do canvas */
+canvas {
+    max-width: 70%;
+    height: auto;
+    flex-grow: 1; /* Ocupa mais espaço */
     padding: 10px;
-    padding-top: 5px;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
 }
-ul li{
+
+/* Estilo da Lista e do Total */
+ul {
     list-style: none;
-    display: flex;
+    flex-basis: 30%; /* Ocupa cerca de 30% do espaço */
+    padding-left: 0;
+    border-left: 3px solid var(--cor-principal);
+    padding-left: 15px;
 }
-div{
-    margin-top: 10px;
-    background-color: rgb(7, 213, 240);
-    width: 500px;
-    height: 80px;
-    border-radius: 5px;
-    padding: 5px;
-    border: 1px solid black;
-    font-size: 20px;
-    transition: 0.3s;
+
+ul li {
+    padding: 8px 0;
+    border-bottom: 1px dashed #e0e0e0;
 }
-div:hover{
-    width: 550px;
-    height: 150px;
-    font-size: 25px;
+
+ul li:last-child {
+    border-bottom: none;
 }
-p{
-    margin-top: 10px;
-    background-color: rgb(7, 213, 240);
-    height: 50px;
-    width: 500px;
-    border-radius: 5px;
-    padding: 5px;
-    margin-left: 40px;
-    border: 1px solid black;
-    font-size: 20px;
-    transition: 0.3s;
+
+p[id^="total"] {
+    margin-top: 15px;
+    padding-top: 10px;
+    border-top: 2px solid #ddd;
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #28a745; /* Cor de destaque (Verde) */
 }
-p:hover{
-    width: 550px;
-    height: 50px;
-    font-size: 25px;
+
+/* 4. Responsividade */
+
+/* Para telas menores que 900px */
+@media (max-width: 900px) {
+    section {
+        flex-direction: column; /* Empilha o gráfico e a lista */
+        align-items: center;
+    }
+
+    canvas {
+        max-width: 100%; /* Gráfico ocupa toda a largura */
+        margin-bottom: 20px;
+    }
+
+    ul {
+        flex-basis: 100%; /* Lista também ocupa toda a largura */
+        width: 100%;
+    }
+}
+
+/* Para telas muito pequenas (Mobile) */
+@media (max-width: 600px) {
+    header {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 10px 20px;
+    }
+
+    header a {
+        margin: 5px 5px 5px 0;
+        display: inline-block;
+    }
+
+    body {
+        padding-top: 100px; /* Ajusta o padding para o header empilhado */
+    }
+
+    section {
+        margin: 15px;
+        padding: 20px;
+    }
 }
